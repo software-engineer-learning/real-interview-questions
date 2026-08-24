@@ -85,19 +85,28 @@ When adding, renaming, or removing a page, update all three:
 
 ## Publishing
 
-Pushes to `main` fire `.github/workflows/trigger-site-deploy.yml`, which calls a
-Cloudflare Pages **deploy hook** to rebuild the site. It needs the
-`SITE_DEPLOY_HOOK` secret: the full hook URL from the Cloudflare dashboard
-(Workers & Pages → `swe-site` → Settings → Builds & deployments → Deploy hooks).
+Pushes to `main` fire `.github/workflows/trigger-site-deploy.yml`, which POSTs a
+`content-updated` **repository_dispatch** to `software-engineer-learning/swe-site`.
+That is what `swe-site/.github/workflows/deploy.yml` listens for, and it is the
+only thing that rebuilds the site: it runs `build.sh`, which clones all four
+content repos, runs `scripts/prepare.sh` and `mkdocs build`, then uploads the
+result with `wrangler pages deploy`.
 
-The hook takes no auth header — possession of the URL is the authorisation — so
-the URL is itself a secret and must never be logged. An organisation-level secret
+It needs the `SITE_DISPATCH_TOKEN` secret — a classic PAT with the `repo` scope,
+owned by an account that can write to `swe-site`. An organisation-level secret
 covers every content repo at once, so it is rotated in one place.
 
-This replaced a `repository_dispatch` authenticated with `SITE_DISPATCH_TOKEN`.
-That could not work: `swe-site` belongs to the `software-engineer-learning` org,
-and a fine-grained PAT owned by a personal account can never hold write
-permissions on an organisation's repository, whatever its settings.
+**Do not swap this for a Cloudflare Pages deploy hook.** That was tried and it
+silently did nothing: `swe-site` is a Direct Upload Pages project, so a hook has
+no repo to clone and no build command to run — it re-serves the assets already
+uploaded, returning `success: true` while the content stays stale. Deploy hooks
+only build on Git-connected Pages projects, and connecting `swe-site` would make
+every change build twice.
+
+(The hook was introduced on the belief that a fine-grained PAT owned by a personal
+account can never write to an org repo. That is not true — it works once the org
+enables fine-grained token access, and a classic PAT with `repo` scope works
+regardless. The original 403 was a token-configuration problem.)
 
 To preview locally, run `bash scripts/prepare.sh && mkdocs serve` from the sibling
 `swe-site` checkout — it picks up this working tree, not GitHub.
