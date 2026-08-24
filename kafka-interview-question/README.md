@@ -1,6 +1,7 @@
 # Kafka Interview Questions & Answers
 
-Structured from `kafka_output/` — one directory per section, one file per question.
+Interview-style Kafka questions with spoken-answer write-ups — one directory per
+section, one file per question.
 
 1. [Basic Kafka Questions](01-basic-kafka-questions/README.md) — 15 questions
 2. [Intermediate Kafka Questions](02-intermediate-kafka-questions/README.md) — 20 questions

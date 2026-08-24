@@ -18,7 +18,19 @@ companies/
   <company-slug>/
     README.md        # company overview: rounds, format, timeline
     <question-slug>.md
+kafka-interview-question/
+  README.md          # topic index: 22 sections, 230 questions
+  NN-<section-slug>/
+    README.md        # section index: numbered list of its questions
+    NN-MM-<question-slug>.md
 ```
+
+Two shapes live here. `companies/` is the original one — questions tied to a
+specific loop, carrying the metadata block below. `kafka-interview-question/` is a
+**topic bank**: a bulk-imported set of Kafka questions organised by subject rather
+than by employer, so its pages carry no company metadata and follow their own
+template (`# N.M. <Question>` / `Answer: ...` / `Interview close: ...`). Keep the
+two apart; don't retrofit either template onto the other.
 
 ## Conventions
 
@@ -80,8 +92,15 @@ mkdocs-literate-nav format at build time.
 When adding, renaming, or removing a page, update all three:
 
 1. `SUMMARY.md` — the site navigation.
-2. `companies/README.md` — the company index table.
+2. The area's own index — `companies/README.md` (the company table), or the Kafka
+   section `README.md` plus `kafka-interview-question/README.md` (both carry
+   per-section question counts that must stay in step).
 3. `README.md` — the "Jump right in" links, if a new top-level area appears.
+
+`SUMMARY.md` lists every Kafka question individually, so a bulk import means a bulk
+nav edit. The section READMEs are the source of truth for titles and ordering —
+derive the nav entries from them rather than from the filenames, so a page's nav
+label always matches its index label.
 
 ## Publishing
 
