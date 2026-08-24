@@ -11,5 +11,6 @@ question someone was genuinely asked, in a real round, at a real company.
 
 * [Companies](companies/README.md) — questions grouped by the company that asked them
 * [Kafka](kafka-interview-question/README.md) — 230 Kafka questions across 22 topic sections
+* [Python](python-interview-question/README.md) — 50 Python questions across 11 topic sections
 
 > Content is being migrated in; expect this index to grow.

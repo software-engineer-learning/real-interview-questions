@@ -23,14 +23,24 @@ kafka-interview-question/
   NN-<section-slug>/
     README.md        # section index: numbered list of its questions
     NN-MM-<question-slug>.md
+python-interview-question/
+  README.md          # topic index: 11 sections, 50 questions
+  NN-<section-slug>/
+    README.md        # section index: its questions, in book order
+    NN-<question-slug>.md
 ```
 
 Two shapes live here. `companies/` is the original one — questions tied to a
-specific loop, carrying the metadata block below. `kafka-interview-question/` is a
-**topic bank**: a bulk-imported set of Kafka questions organised by subject rather
-than by employer, so its pages carry no company metadata and follow their own
-template (`# N.M. <Question>` / `Answer: ...` / `Interview close: ...`). Keep the
-two apart; don't retrofit either template onto the other.
+specific loop, carrying the metadata block below. The `*-interview-question/`
+directories are **topic banks**: bulk-imported question sets organised by subject
+rather than by employer, so their pages carry no company metadata and follow their
+own template. Keep the two apart; don't retrofit either template onto the other.
+
+The banks differ in numbering. Kafka pages are renumbered per section
+(`# N.M. <Question>`, files `NN-MM-<slug>.md`); Python pages keep their original
+book numbers (`# N. <Question>`, files `NN-<slug>.md`), which is why a Python
+section's questions are not consecutive and are not sorted by number. Either way
+the nav label must match the page's own H1 and its section-index label.
 
 ## Conventions
 
@@ -92,13 +102,13 @@ mkdocs-literate-nav format at build time.
 When adding, renaming, or removing a page, update all three:
 
 1. `SUMMARY.md` — the site navigation.
-2. The area's own index — `companies/README.md` (the company table), or the Kafka
-   section `README.md` plus `kafka-interview-question/README.md` (both carry
+2. The area's own index — `companies/README.md` (the company table), or for a
+   topic bank the section `README.md` plus the bank's own `README.md` (both carry
    per-section question counts that must stay in step).
 3. `README.md` — the "Jump right in" links, if a new top-level area appears.
 
-`SUMMARY.md` lists every Kafka question individually, so a bulk import means a bulk
-nav edit. The section READMEs are the source of truth for titles and ordering —
+`SUMMARY.md` lists every topic-bank question individually, so a bulk import means a
+bulk nav edit. The section READMEs are the source of truth for titles and ordering —
 derive the nav entries from them rather than from the filenames, so a page's nav
 label always matches its index label.
 
