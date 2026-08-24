@@ -85,10 +85,19 @@ When adding, renaming, or removing a page, update all three:
 
 ## Publishing
 
-Pushes to `main` fire `.github/workflows/trigger-site-deploy.yml`, which sends a
-`content-updated` `repository_dispatch` to `lyxuansang91/swe-site` to rebuild the
-site. It needs the `SITE_DISPATCH_TOKEN` secret: a fine-grained PAT for
-`lyxuansang91/swe-site` with **Contents: read and write**.
+Pushes to `main` fire `.github/workflows/trigger-site-deploy.yml`, which calls a
+Cloudflare Pages **deploy hook** to rebuild the site. It needs the
+`SITE_DEPLOY_HOOK` secret: the full hook URL from the Cloudflare dashboard
+(Workers & Pages → `swe-site` → Settings → Builds & deployments → Deploy hooks).
+
+The hook takes no auth header — possession of the URL is the authorisation — so
+the URL is itself a secret and must never be logged. An organisation-level secret
+covers every content repo at once, so it is rotated in one place.
+
+This replaced a `repository_dispatch` authenticated with `SITE_DISPATCH_TOKEN`.
+That could not work: `swe-site` belongs to the `software-engineer-learning` org,
+and a fine-grained PAT owned by a personal account can never hold write
+permissions on an organisation's repository, whatever its settings.
 
 To preview locally, run `bash scripts/prepare.sh && mkdocs serve` from the sibling
 `swe-site` checkout — it picks up this working tree, not GitHub.
